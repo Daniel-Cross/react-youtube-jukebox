@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import '../styles/app.css';
 import Login from './login';
+import Header from './header';
+import Sidebar from './sidebar';
 
 class App extends React.Component {
   constructor() {
@@ -12,6 +14,7 @@ class App extends React.Component {
     };
 
     this.handleAuthorization = this.handleAuthorization.bind(this);
+    this.handleSignOut = this.handleSignOut.bind(this);
   }
 
   componentDidMount() {
@@ -39,21 +42,30 @@ class App extends React.Component {
     });
   }
 
+  handleSignOut() {
+    this.state.gAuthInstance.signOut(),
+
+    this.setState({
+      authenticatedUser: null,
+    });
+  }
+
   render() {
     const { authenticatedUser, gAuthInstance } = this.state;
     return (
-
-      <div className="app">
-        { authenticatedUser ? (
-          <div>You are logged in!</div>
+      <div className="App">
+        {authenticatedUser ? (
+          <Header onSignOut={this.handleSignOut} />
+          <div className="split">
+              <Sidebar />
+          </div>
         ) : (
           <Login gAuthInstance={gAuthInstance} />
-        )
-      }
+        )}
       </div>
     );
   }
-}
 
+}
 
 export default App;
