@@ -3,6 +3,8 @@ import '../styles/app.css';
 import Login from './login';
 import Header from './header';
 import Sidebar from './sidebar';
+import { Route } from 'react-router-dom';
+import Main from './main';
 
 class App extends React.Component {
   constructor() {
@@ -52,12 +54,19 @@ class App extends React.Component {
 
   render() {
     const { authenticatedUser, gAuthInstance } = this.state;
+
     return (
       <div className="App">
         {authenticatedUser ? (
-          <Header onSignOut={this.handleSignOut} />
-          <div className="split">
+          <div>
+            <Header onSignOut={this.handleSignOut} />
+            <div className="split">
               <Sidebar />
+            </div>
+            <Main>
+              <Route path="/playlists/:playlistId" component={Playlist} />
+              <Route path="/search/:query" component={SearchResults} />
+            </Main>
           </div>
         ) : (
           <Login gAuthInstance={gAuthInstance} />
@@ -65,7 +74,6 @@ class App extends React.Component {
       </div>
     );
   }
-
 }
 
 export default App;
